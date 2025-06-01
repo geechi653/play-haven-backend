@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.models.example import User
+from app.models.user import User
 from sqlalchemy import select
 from typing import Optional
 

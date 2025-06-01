@@ -4,7 +4,7 @@ Execute with:  python seed_db.py
 from faker import Faker
 from app import create_app
 from app.extensions import db
-from app.models.example import User
+from app.models.user import User
 
 fake = Faker()
 
