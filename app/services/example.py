@@ -1,5 +1,5 @@
 from app.repositories.example import UserRepository
-from app.models.example import User
+from app.models.user import User
 from typing import Optional
 
 class UserService:
