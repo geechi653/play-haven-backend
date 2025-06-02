@@ -9,9 +9,9 @@ class Order(db.Model):
 
     id = mapped_column(Integer, primary_key=True)
     user_id = mapped_column(Integer, ForeignKey(
-        "users.id"), unique=True, nullable=False)
+        "users.id"), nullable=False)
     game_id = mapped_column(Integer, ForeignKey(
-        "games.id"), unique=True, nullable=False)
+        "games.id"), nullable=False)
     user_library_id = mapped_column(Integer, ForeignKey("user_library.id"))
     order_date = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
@@ -25,8 +25,8 @@ class Order(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "game_id": self.game_id,
+            "user_library_id": self.user_library_id,
             "order_date": self.order_date,
             "total_amount": self.total_amount,
-            "status": self.status,
-            "created_at": self.created_at
+            "status": self.status
         }

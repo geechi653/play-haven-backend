@@ -22,5 +22,5 @@ class WishlistItem(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "game_id": self.game_id,
-            "created_at": self.order_date,
+            "created_at": self.created_at,
         }
