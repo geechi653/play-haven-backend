@@ -15,7 +15,8 @@ class UserLibrary(db.Model):
     game_id = mapped_column(Integer, ForeignKey(
         "games.id"), unique=True, nullable=False)
 
-    user_games = relationship("Game", back_populates="user_library")
+    user = relationship("User", back_populates="user_library_entries")
+    user_library_entries = relationship("UserLibrary", back_populates="user")
     orders = relationship("Order", back_populates="user_library")
 
     def serialize(self):

@@ -15,7 +15,9 @@ class WishlistItem(db.Model):
     created_at = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    game = relationship("Game", back_populates="wishlist_item")
+
+    user = relationship("User")
+    game = relationship("Game", back_populates="wishlist_items")
 
     def serialize(self):
         return {
