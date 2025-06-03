@@ -20,6 +20,7 @@ class User(db.Model):
         timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     profile = relationship("Profile", back_populates="user")
+    orders = relationship("Order", back_populates="user")
 
     def serialize(self):
         return {
