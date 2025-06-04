@@ -34,7 +34,7 @@ class WishlistItemRepository:
         return wishlist_item
     
     @staticmethod
-    def remove_from_wishlist(user_id: int, game_id: int) -> bool:
+    def delete_from_wishlist(user_id: int, game_id: int) -> bool:
         wishliset_item = WishlistItemRepository.get_wishlist_item(user_id, game_id)
         
         if not wishliset_item:  
