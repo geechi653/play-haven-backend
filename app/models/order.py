@@ -9,16 +9,16 @@ class Order(db.Model):
 
     id = mapped_column(Integer, primary_key=True)
     user_id = mapped_column(Integer, ForeignKey(
-        "users.id"), unique=True, nullable=False)
+        "users.id"), nullable=False)
     game_id = mapped_column(Integer, ForeignKey(
-        "games.id"), unique=True, nullable=False)
-    user_library_id = mapped_column(Integer, ForeignKey("user_library.id"))
+        "games.id"), nullable=False)
     order_date = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     total_amount = mapped_column(Numeric(10, 2), nullable=False)
     status = mapped_column(String(255), nullable=True)
 
-    user_library = relationship("UserLibrary", back_populates="orders")
+    user = relationship("User") 
+    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
     def serialize(self):
         return {
@@ -26,7 +26,6 @@ class Order(db.Model):
             "user_id": self.user_id,
             "game_id": self.game_id,
             "order_date": self.order_date,
-            "total_amount": self.total_amount,
-            "status": self.status,
-            "created_at": self.created_at
+            "total_amount": str(self.total_amount),
+            "status": self.status
         }

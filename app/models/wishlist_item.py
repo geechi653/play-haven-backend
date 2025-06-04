@@ -15,12 +15,14 @@ class WishlistItem(db.Model):
     created_at = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    game = relationship("Game", back_populates="wishlist_item")
+
+    user = relationship("User")
+    game = relationship("Game", back_populates="wishlist_items")
 
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
             "game_id": self.game_id,
-            "created_at": self.order_date,
+            "created_at": self.created_at,
         }

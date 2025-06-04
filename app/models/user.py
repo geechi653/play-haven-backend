@@ -13,13 +13,14 @@ class User(db.Model):
     email = mapped_column(String(255), unique=True, nullable=False, index=True)
     password = mapped_column(String(255), nullable=False)
     is_active = mapped_column(Boolean, default=True, nullable=False)
-    is_admin = mapped_column(Boolean, default=True, nullable=False)
+    is_admin = mapped_column(Boolean, default=False, nullable=False)
     created_at = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = mapped_column(DateTime, default=lambda: datetime.now(
         timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
     profile = relationship("Profile", back_populates="user")
+    orders = relationship("Order", back_populates="user")
 
     def serialize(self):
         return {
