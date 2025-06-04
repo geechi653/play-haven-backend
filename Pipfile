@@ -16,6 +16,7 @@ python-dotenv = "*"
 faker = "*"
 marshmallow = "<4.0.0"
 wtforms = "<3.2"
+flask-jwt-extended = "*"
 
 [dev-packages]
 pytest = "*"

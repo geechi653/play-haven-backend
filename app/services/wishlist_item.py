@@ -3,7 +3,6 @@ from app.models.game import Game
 from app.models.user import User
 from app.extensions import db
 from sqlalchemy import select
-from typing import List, Optional, Dict, Any
 
 class WishlistService:
     @staticmethod
