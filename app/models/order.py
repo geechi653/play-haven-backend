@@ -17,7 +17,7 @@ class Order(db.Model):
     total_amount = mapped_column(Numeric(10, 2), nullable=False)
     status = mapped_column(String(255), nullable=True)
 
-    user = relationship("User") 
+    user = relationship("User", back_populates="orders")
     order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
     def serialize(self):

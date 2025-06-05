@@ -13,7 +13,7 @@ class OrderItem(db.Model):
     price = mapped_column(Numeric(10, 2), nullable=False)
 
     order = relationship("Order", back_populates="order_items")
-    game = relationship("Game")
+    game = relationship("Game", back_populates="order_items")
 
     def serialize(self):
         return {

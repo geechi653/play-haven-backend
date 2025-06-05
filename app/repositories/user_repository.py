@@ -27,3 +27,23 @@ class UserRepository:
         stmt = select(User).where(User.email == email)
         result = db.session.execute(stmt)
         return result.scalars().first()
+    
+    @staticmethod
+    def get_by_username(username: str) -> Optional[User]:
+        """Get user by username"""
+        stmt = select(User).where(User.username == username)
+        result = db.session.execute(stmt)
+        return result.scalars().first()
+    
+    @staticmethod
+    def update(user: User) -> User:
+        """Update the user"""
+        db.session.commit()
+        return user
+    
+    
+    @staticmethod
+    def delete(user: User) -> None:
+        """Delete the user"""
+        db.session.delete(user)
+        db.session.commit()

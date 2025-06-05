@@ -21,7 +21,7 @@ def create_app(env: str | None = None) -> Flask:
 
 
     # register blueprints
-    app.register_blueprint(admin_bp, url_prefix="/api/admin")
+    app.register_blueprint(admin_bp, url_prefix="/api/admins")
     app.register_blueprint(library_bp, url_prefix="/api")
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
 

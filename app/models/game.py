@@ -17,8 +17,9 @@ class Game(db.Model):
     rating = mapped_column(Float, nullable=True)
     image_url = mapped_column(String(255), nullable=True)
 
-    user_library = relationship("UserLibrary", back_populates="user_games")
+    user_library_entries = relationship("UserLibrary", back_populates="game")
     wishlist_items = relationship("WishlistItem", back_populates="game")
+    order_items = relationship("OrderItem", back_populates="game")
 
     def serialize(self):
         return {

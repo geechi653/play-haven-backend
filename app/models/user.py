@@ -19,8 +19,10 @@ class User(db.Model):
     updated_at = mapped_column(DateTime, default=lambda: datetime.now(
         timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
-    profile = relationship("Profile", back_populates="user")
+    profile = relationship("Profile", back_populates="user", uselist=False)
     orders = relationship("Order", back_populates="user")
+    user_library_entries = relationship("UserLibrary", back_populates="user")
+    wishlist_items = relationship("WishlistItem", back_populates="user")
 
     def serialize(self):
         return {
