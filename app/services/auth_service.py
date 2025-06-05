@@ -5,7 +5,7 @@ from app.models.user import User
 
 
 class AuthService:
-    pass
+
     @staticmethod
     def register(email: str, username: str, first_name: str, last_name: str, country: str, password: str) -> User:
         if UserRepository.get_by_email(email):
