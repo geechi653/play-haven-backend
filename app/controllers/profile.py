@@ -3,7 +3,7 @@ from app.services.profile import ProfileService
 from app.models.profile import Profile
 
 # Create blueprint for profile routes
-profile_bp = Blueprint('profile', __name__, url_prefix='profiles/')
+profile_bp = Blueprint('profile', __name__)
 
 
 @profile_bp.route('/user/<int:user_id>', methods=['POST'])
