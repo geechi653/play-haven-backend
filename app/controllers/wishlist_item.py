@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.admin import AdminService
 from app.services.wishlist_item import WishlistService
 
-wishlist_item_bp = Blueprint("wishlist_items", __name__, url_prefix='/api')
+wishlist_item_bp = Blueprint("wishlist_items", __name__)
 
 @wishlist_item_bp.route('/user/<int:user_id>/wishlist', methods=['GET'])
 @jwt_required()
