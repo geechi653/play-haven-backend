@@ -1,12 +1,14 @@
 from flask import Blueprint, request, jsonify
 from app.services.profile import ProfileService
 from app.models.profile import Profile
+from flask_jwt_extended import jwt_required
 
-# Create blueprint for profile routes
+
 profile_bp = Blueprint('profiles', __name__)
 
 
 @profile_bp.route('/user/<int:user_id>', methods=['POST'])
+@jwt_required()
 def create_profile(user_id):
     try:
         profile_data = request.get_json()
@@ -25,6 +27,7 @@ def create_profile(user_id):
 
 
 @profile_bp.route('/user/<int:user_id>', methods=['GET'])
+@jwt_required()
 def get_profile_by_user_id(user_id):
     try:
         profile = ProfileService.get_user_profile(user_id)
@@ -39,6 +42,7 @@ def get_profile_by_user_id(user_id):
 
 
 @profile_bp.route('/<int:profile_id>', methods=['GET'])
+@jwt_required()
 def get_profile_by_profile_id(profile_id):
     try:
         profile = ProfileService.get_profile_by_profile_id(profile_id)
@@ -53,6 +57,7 @@ def get_profile_by_profile_id(profile_id):
 
 
 @profile_bp.route('/user/<int:user_id>', methods=['PUT'])
+@jwt_required()
 def update_profile_by_user_id(user_id):
     try:
         profile_data = request.get_json()
@@ -71,6 +76,7 @@ def update_profile_by_user_id(user_id):
 
 
 @profile_bp.route('/user/<int:user_id>', methods=['DELETE'])
+@jwt_required()
 def delete_profile_by_user_id(user_id):
     try:
         success = ProfileService.delete_user_profile(user_id)
@@ -85,6 +91,7 @@ def delete_profile_by_user_id(user_id):
 
 
 @profile_bp.route('/user/<int:user_id>/avatar', methods=['PATCH'])
+@jwt_required()
 def update_avatar(user_id):
     try:
         data = request.get_json()
