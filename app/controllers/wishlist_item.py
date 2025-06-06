@@ -21,15 +21,6 @@ def get_user_wishlist(user_id):
         return jsonify({"success": False, "message": "Failed to retrieve user wishlist"}), 500
     
 
-# @wishlist_item_bp.route("/user/<int:user_id>/wishlist/<int:game_id>", methods=["POST"])
-# @jwt_required()
-# def add_wishlist_item(user_id: int, game_id: int):
-#     try:
-#         item = WishlistService.add_to_wishlist(user_id=user_id, game_id=game_id)
-#         return jsonify(item.serialize())
-#     except ValueError as e:
-#         return jsonify({"error": str(e)})
-
 @wishlist_item_bp.route('/user/<int:user_id>/wishlist/add', methods=['POST'])
 @jwt_required()
 def add_wishlist_item(user_id):
@@ -57,9 +48,10 @@ def add_wishlist_item(user_id):
         current_app.logger.error(f"Error adding game to wishlist: {str(e)}")
         return jsonify({"success": False, "message": "Failed to add game to wishlist"}), 500
 
+
 @wishlist_item_bp.route('/user/<int:user_id>/wishlist/game/<int:game_id>', methods=['DELETE'])
 @jwt_required()
-def delete_game_from_wishlist(user_id, game_id):
+def delete_item_from_wishlist(user_id, game_id):
     current_user_id = get_jwt_identity()
     
     if current_user_id != user_id and not AdminService.is_admin(current_user_id):
@@ -73,15 +65,3 @@ def delete_game_from_wishlist(user_id, game_id):
     except Exception as e:
         current_app.logger.error(f"Error removing wishlist game: {str(e)}")
         return jsonify({"success": False, "message": "Failed to remove game from wishlist"}), 500
-
-# @wishlist_item_bp.route("/api/wishlist/<int:user_id>/wishlist-item/<int:wishlist_item_id>", methods=["DELETE"])
-# @jwt_required()
-# def delete_wishlist_item(user_id: int, wishlist_item_id: int):
-#     item = WishlistService.get_wishlist_item(wishlist_item_id)
-#     if not item:
-#         return jsonify({"error": f"No such item with id {wishlist_item_id}"})
-#     result = WishlistItemService.remove_item_from_wishlist(user_id, item.game_id)
-#     if result:
-#         return jsonify({"message": "Item deleted successfully from wishlist"}), 200
-#     else:
-#         return jsonify({"error": "Item failed to be deleted from wishlist"}), 400
