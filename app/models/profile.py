@@ -9,12 +9,13 @@ class Profile(db.Model):
     id = mapped_column(Integer, primary_key=True)
     user_id = mapped_column(Integer, ForeignKey(
         "users.id"), unique=True, nullable=False)
-    first_name = mapped_column(String(255), nullable=True)
-    last_name = mapped_column(String(255), nullable=True)
+    first_name = mapped_column(String(255), nullable=False)
+    last_name = mapped_column(String(255), nullable=False)
     avatar_url = mapped_column(String(255), nullable=True)
     address = mapped_column(String(255), nullable=True)
     city = mapped_column(String(255), nullable=True)
     state = mapped_column(String(100), nullable=True)
+    country = mapped_column(String(100), nullable=False)
     zip_code = mapped_column(String(100), nullable=True)
 
     user = relationship("User", back_populates="profile")
@@ -29,5 +30,6 @@ class Profile(db.Model):
             "address": self.address,
             "city": self.city,
             "state": self.state,
+            "country": self.country,
             "zip_code": self.zip_code
         }

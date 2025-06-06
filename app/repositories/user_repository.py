@@ -7,13 +7,11 @@ from werkzeug.security import generate_password_hash
 
 class UserRepository:
     @staticmethod
-    def create_user(email: str, username: str, first_name: str, last_name: str, country: str, password: str, is_admin: bool = False) -> User:
+    def create_user(email: str, username: str, password: str, is_admin: bool = False) -> User:
         """Create new user"""
-        user = User(email=email, username=username, first_name=first_name, last_name=last_name,
-                    country=country, password=generate_password_hash(password), is_admin=is_admin)
-        user.email = email
+        user = User(email=email, username=username,
+                    password=generate_password_hash(password), is_admin=is_admin)
         db.session.add(user)
-        db.session.commit()
         return user
 
     @staticmethod

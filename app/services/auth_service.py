@@ -1,7 +1,7 @@
-from typing import Optional
+from app.extensions import db
 from app.repositories.user_repository import UserRepository
+from app.repositories.profile_repository import ProfileRepository
 from app.models.user import User
-
 
 
 class AuthService:
@@ -14,9 +14,13 @@ class AuthService:
         if UserRepository.get_by_username(username):
             raise ValueError("Username already taken")
 
-        user = UserRepository.create_user(
-            email, username, first_name, last_name, country, password)
-       
-        ProfileRepository.create(user.id) #todo error will be gone after adding Profile repository
-        return user
-
+        try:
+            user = UserRepository.create_user(email, username, password)
+            db.session.flush()
+            profile = ProfileRepository.create(
+                user_id=user.id, first_name=first_name, last_name=last_name, country=country)
+            db.session.commit()
+            return user
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f"Registration failed: {str(e)}")
