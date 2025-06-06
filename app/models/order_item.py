@@ -7,13 +7,13 @@ class OrderItem(db.Model):
     __tablename__ = "order_items"
 
     id = mapped_column(Integer, primary_key=True)
-    order_id = mapped_column(Integer, ForeignKey("orders.id"), unique=True, nullable=False)
-    game_id = mapped_column(Integer, ForeignKey("games.id"), unique=True, nullable=False)
+    order_id = mapped_column(Integer, ForeignKey("orders.id"), nullable=False)
+    game_id = mapped_column(Integer, ForeignKey("games.id"), nullable=False)
     quantity = mapped_column(Integer, nullable=False, default=1)
     price = mapped_column(Numeric(10, 2), nullable=False)
 
     order = relationship("Order", back_populates="order_items")
-    game = relationship("Game")
+    game = relationship("Game", back_populates="order_items")
 
     def serialize(self):
         return {

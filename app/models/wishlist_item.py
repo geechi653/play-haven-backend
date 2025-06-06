@@ -8,16 +8,18 @@ class WishlistItem(db.Model):
     __tablename__ = "wishlist_items"
 
     id = mapped_column(Integer, primary_key=True)
-    user_id = mapped_column(Integer, ForeignKey(
-        "users.id"), unique=True, nullable=False)
-    game_id = mapped_column(Integer, ForeignKey(
-        "games.id"), unique=True, nullable=False)
+    user_id = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
+    game_id = mapped_column(Integer, ForeignKey("games.id"), nullable=False)
     created_at = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
-
-    user = relationship("User")
+    # Relationships
+    user = relationship("User", back_populates="wishlist_items")
     game = relationship("Game", back_populates="wishlist_items")
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'game_id', name='unique_user_game_wishlist'),
+    )
 
     def serialize(self):
         return {
