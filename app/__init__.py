@@ -6,6 +6,7 @@ from app.controllers.admin import admin_bp
 from app.controllers.library import library_bp
 from app.controllers.auth_controller import auth_bp
 from app.controllers.profile import profile_bp
+from app.controllers.wishlist_item import wishlist_item_bp
 from app.error_handlers import register_error_handlers
 
 def create_app(env: str | None = None) -> Flask:
@@ -26,6 +27,7 @@ def create_app(env: str | None = None) -> Flask:
     app.register_blueprint(library_bp, url_prefix="/api")
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(profile_bp, url_prefix="/api/profiles")
+    app.register_blueprint(wishlist_item_bp, url_prefix="/api/wishlist_items/")
 
     # health check
     @app.get("/ping")
