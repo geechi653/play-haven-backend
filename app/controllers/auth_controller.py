@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from app.utils.validators import is_valid_email, is_valid_first_name, is_valid_last_name, is_valid_username, is_valid_country, is_valid_password
 from app.services.auth_service import AuthService
+from app.services.user_service import UserService
+from flask_jwt_extended import create_access_token
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -51,3 +53,26 @@ def register():
         return jsonify({"message": "user successfully created", "user": user.serialize()})
     except ValueError as e:
         return jsonify({"error": f"registration failed", "messgae": str(e)}), 400
+
+
+@auth_bp.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+
+    if not data or "username" not in data or "password" not in data:
+        return jsonify({"error": "Missing username or password"})
+
+    user = UserService.get_user_by_username(data.get("username"))
+
+    if not user:
+        return jsonify({"error": "user not found"})
+
+    if not data.get("password"):
+        return jsonify({"error": "Password is required"})
+
+    if not user.check_password(data.get("passowrd")):
+        return jsonify({"error": "password does not match"})
+
+    access_token = create_access_token(identity=str(user.id), additional_claims={"username": data.get("username")})
+
+    return jsonify({"user": user.serialize(), "token": access_token})

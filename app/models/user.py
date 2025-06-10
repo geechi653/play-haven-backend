@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from sqlalchemy import String, DateTime, Integer, Boolean
 from sqlalchemy.orm import mapped_column, relationship
 from app.extensions import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model):
@@ -23,6 +24,16 @@ class User(db.Model):
     orders = relationship("Order", back_populates="user")
     user_library_entries = relationship("UserLibrary", back_populates="user")
     wishlist_items = relationship("WishlistItem", back_populates="user")
+
+
+
+    def set_password(self, password):
+        self._password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    
 
     def serialize(self):
         return {
