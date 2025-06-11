@@ -38,6 +38,6 @@ class WishlistService:
             formatted_items.append({
                 "wishlist_id": item.id,
                 "created_at": item.created_at,
-                "game": item.user_games.serialize() if item.user_games else None
+                "game": item.game.serialize() if item.game else None
             })
         return formatted_items
