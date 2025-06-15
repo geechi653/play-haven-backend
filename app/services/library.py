@@ -39,6 +39,6 @@ class LibraryService:
             formatted_items.append({
                 "library_id": item.id,
                 "added_at": item.added_at,
-                "game": item.user_games.serialize() if item.user_games else None
+                "game": item.game.serialize() if item.game else None
             })
         return formatted_items

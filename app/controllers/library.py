@@ -53,7 +53,7 @@ def get_library_game(user_id, game_id):
             "data": {
                 "library_id": library_item.id,
                 "added_at": library_item.added_at,
-                "game": library_item.user_games.serialize() if library_item.user_games else None
+                "game": library_item.game.serialize() if library_item.game else None
             }
         }), 200
 
@@ -113,7 +113,7 @@ def add_to_library(user_id):
             "data": {
                 "library_id": library_item.id,
                 "added_at": library_item.added_at,
-                "game": library_item.user_games.serialize() if library_item.user_games else None
+                "game": library_item.game.serialize() if library_item.game else None
             }
         }), 201
 
