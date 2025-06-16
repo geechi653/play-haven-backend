@@ -70,7 +70,7 @@ def login():
     if not data.get("password"):
         return jsonify({"error": "Password is required"})
 
-    if not user.check_password(data.get("passowrd")):
+    if not user.check_password(data.get("password")):
         return jsonify({"error": "password does not match"})
 
     access_token = create_access_token(identity=str(user.id), additional_claims={"username": data.get("username")})

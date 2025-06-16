@@ -39,9 +39,9 @@ def add_wishlist_item(user_id):
             return jsonify({"success": False, "message": str(e)}), 404
         return jsonify({"success": True, "message": "Game added to wishlist successfully",
             "data": {
-                "wislist_id": wishlist_item.id,
+                "wishlist_id": wishlist_item.id,
                 "created_at": wishlist_item.created_at,
-                "game": wishlist_item.user_games.serialize() if wishlist_item.user_games else None
+                "game": wishlist_item.game.serialize() if wishlist_item.game else None
             }
         }), 201
     except Exception as e:
