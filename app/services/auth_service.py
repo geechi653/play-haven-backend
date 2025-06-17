@@ -17,7 +17,7 @@ class AuthService:
         try:
             user = UserRepository.create_user(email, username, password)
             db.session.flush()
-            profile = ProfileRepository.create(
+            profile = ProfileRepository.create_profile(
                 user_id=user.id, first_name=first_name, last_name=last_name, country=country)
             db.session.commit()
             return user
