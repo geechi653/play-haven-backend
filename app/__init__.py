@@ -8,6 +8,8 @@ from app.controllers.auth_controller import auth_bp
 from app.controllers.profile import profile_bp
 from app.controllers.wishlist_item import wishlist_item_bp
 from app.controllers.user_controller import user_bp
+from app.controllers.steam_controller import steam_controller
+from app.controllers.cart_controller import cart_controller
 from app.error_handlers import register_error_handlers
 
 def create_app(env: str | None = None) -> Flask:
@@ -28,6 +30,8 @@ def create_app(env: str | None = None) -> Flask:
     app.register_blueprint(profile_bp, url_prefix="/api/profiles")
     app.register_blueprint(wishlist_item_bp, url_prefix="/api/wishlist_items/")
     app.register_blueprint(user_bp, url_prefix="/api/user")
+    app.register_blueprint(steam_controller)
+    app.register_blueprint(cart_controller)
 
     @app.get("/ping")
     def ping():

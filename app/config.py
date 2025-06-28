@@ -13,6 +13,7 @@ class BaseConfig:
     SECRET_KEY = getenv("SECRET_KEY")
     JWT_SECRET_KEY = getenv("JWT_SECRET_KEY", getenv("SECRET_KEY"))
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
+    STEAM_API_KEY = getenv("STEAM_API_KEY")
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
