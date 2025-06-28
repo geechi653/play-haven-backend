@@ -116,3 +116,16 @@ def download_game(app_id):
     except Exception as e:
         logger.error(f"Error in download_game for app_id {app_id}: {e}")
         return jsonify({"error": "Failed to prepare game for download"}), 500
+
+@steam_controller.route('/games/<int:app_id>/news', methods=['GET'])
+def get_game_news(app_id):
+    """Get news for a specific game"""
+    try:
+        count = request.args.get('count', default=5, type=int)
+        maxlength = request.args.get('maxlength', default=500, type=int)
+        steam_service = SteamService()
+        news = steam_service.get_game_news(app_id, count, maxlength)
+        return jsonify(news)
+    except Exception as e:
+        logger.error(f"Error in get_game_news for app_id {app_id}: {e}")
+        return jsonify({"error": "Failed to fetch game news"}), 500

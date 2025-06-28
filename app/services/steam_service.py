@@ -330,3 +330,51 @@ class SteamService:
         except Exception as e:
             logger.error(f"Error searching games with query '{query}': {e}")
             return []
+
+    def get_game_news(self, app_id, count=5, maxlength=500):
+        """Fetch news for a specific game from Steam API"""
+        try:
+            cache_key = f"news_{app_id}_{count}_{maxlength}"
+            current_time = time.time()
+            if cache_key in self._game_cache:
+                cache_entry = self._game_cache[cache_key]
+                if current_time - cache_entry['timestamp'] < self._cache_expiry:
+                    logger.info(f"Cache hit for news: {app_id}")
+                    return cache_entry['data']
+
+            if 'last_request' in self._last_fetch_time:
+                elapsed = current_time - self._last_fetch_time['last_request']
+                if elapsed < 0.5:
+                    time.sleep(0.5 - elapsed)
+            self._last_fetch_time['last_request'] = time.time()
+
+            url = f"{self.base_url}/ISteamNews/GetNewsForApp/v0002/"
+            params = {
+                "appid": app_id,
+                "count": count,
+                "maxlength": maxlength,
+                "format": "json"
+            }
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+            news_items = data.get("appnews", {}).get("newsitems", [])
+
+            formatted_news = [
+                {
+                    "title": item.get("title"),
+                    "date": datetime.utcfromtimestamp(item.get("date")).strftime("%Y-%m-%d"),
+                    "summary": item.get("contents"),
+                    "url": item.get("url")
+                }
+                for item in news_items
+            ]
+
+            self._game_cache[cache_key] = {
+                "data": formatted_news,
+                "timestamp": time.time()
+            }
+            return formatted_news
+        except Exception as e:
+            logger.error(f"Error fetching news for app_id {app_id}: {e}")
+            return []
