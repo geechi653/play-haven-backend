@@ -4,4 +4,4 @@ from app import create_app
 if __name__ == "__main__":
     env = os.getenv("FLASK_ENV", "development")
     app = create_app(env)
-    app.run(debug=(env == "development"))
+    app.run(debug=(env == "development"), port=5001)
