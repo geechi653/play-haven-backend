@@ -165,7 +165,7 @@ class SteamService:
             
             self._last_fetch_time['last_request'] = time.time()
             
-            url = f"{self.store_url}/featuredcategories/"
+            url = f"{self.store_url}/featuredcategories/?l=english"
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
@@ -212,7 +212,7 @@ class SteamService:
             
             self._last_fetch_time['last_request'] = time.time()
             
-            url = f"{self.store_url}/featured/"
+            url = f"{self.store_url}/featured/?l=english"
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
@@ -260,7 +260,8 @@ class SteamService:
             
             self._last_fetch_time['last_request'] = time.time()
             
-            url = f"{self.store_url}/appdetails?appids={app_id}"
+            # Always add l=english to the appdetails URL
+            url = f"{self.store_url}/appdetails?appids={app_id}&l=english"
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
