@@ -17,8 +17,7 @@ ENV/
 *.sqlite3
 
 # Migrations (except for the migration directory itself)
-migrations/*
-!migrations/.gitkeep
+!migrations/
 
 # Flask
 instance/
