@@ -10,6 +10,10 @@ wishlist_item_bp = Blueprint("wishlist_items", __name__)
 def get_user_wishlist(user_id):
     current_user_id = get_jwt_identity()
     
+    # Convert to int if needed (JWT identity might be string)
+    if isinstance(current_user_id, str):
+        current_user_id = int(current_user_id)
+    
     if current_user_id != user_id and not AdminService.is_admin(current_user_id):
         return jsonify({"success": False, "message": "Access to the wishlist denied"}), 403
     try:
@@ -25,6 +29,10 @@ def get_user_wishlist(user_id):
 @jwt_required()
 def add_wishlist_item(user_id):
     current_user_id = get_jwt_identity()
+    
+    # Convert to int if needed (JWT identity might be string)
+    if isinstance(current_user_id, str):
+        current_user_id = int(current_user_id)
     
     if current_user_id != user_id and not AdminService.is_admin(current_user_id):
         return jsonify({"success": False, "message": "Access denied"}), 403
@@ -53,6 +61,10 @@ def add_wishlist_item(user_id):
 @jwt_required()
 def delete_item_from_wishlist(user_id, game_id):
     current_user_id = get_jwt_identity()
+    
+    # Convert to int if needed (JWT identity might be string)
+    if isinstance(current_user_id, str):
+        current_user_id = int(current_user_id)
     
     if current_user_id != user_id and not AdminService.is_admin(current_user_id):
         return jsonify({"success": False, "message": "Access to wishlist denied"}), 403
