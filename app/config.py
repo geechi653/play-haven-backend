@@ -14,6 +14,12 @@ class BaseConfig:
     JWT_SECRET_KEY = getenv("JWT_SECRET_KEY", getenv("SECRET_KEY"))
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
     STEAM_API_KEY = getenv("STEAM_API_KEY")
+    
+    # CORS Configuration - Allow all origins (simple and flexible)
+    CORS_ORIGINS = "*"
+    CORS_ALLOW_HEADERS = ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
+    CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+    CORS_SUPPORTS_CREDENTIALS = False
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True

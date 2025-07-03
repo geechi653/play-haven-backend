@@ -15,7 +15,6 @@ library_bp = Blueprint('library', __name__)
 def get_user_library(user_id):
     current_user_id = get_jwt_identity()
 
-    # Convert to int if needed (JWT identity might be string)
     if isinstance(current_user_id, str):
         current_user_id = int(current_user_id)
 
@@ -37,9 +36,9 @@ def get_user_library(user_id):
         return jsonify({"success": False, "message": "Failed to retrieve user library"}), 500
 
 
-@library_bp.route('/user/<int:user_id>/library/game/<int:game_id>', methods=['GET'])
+@library_bp.route('/user/<int:user_id>/library/game/<int:steam_game_id>', methods=['GET'])
 @jwt_required()
-def get_library_game(user_id, game_id):
+def get_library_game(user_id, steam_game_id):
     current_user_id = get_jwt_identity()
 
     # Convert to int if needed (JWT identity might be string)
@@ -50,7 +49,7 @@ def get_library_game(user_id, game_id):
         return jsonify({"success": False, "message": "Access denied"}), 403
 
     try:
-        library_item = LibraryService.get_library_item(user_id, game_id)
+        library_item = LibraryService.get_library_item(user_id, steam_game_id)
 
         if not library_item:
             return jsonify({"success": False, "message": "Game not found in user's library"}), 404
@@ -61,7 +60,7 @@ def get_library_game(user_id, game_id):
             "data": {
                 "library_id": library_item.id,
                 "added_at": library_item.added_at,
-                "game": library_item.game.serialize() if library_item.game else None
+                "steam_game_id": library_item.steam_game_id
             }
         }), 200
 
@@ -70,9 +69,9 @@ def get_library_game(user_id, game_id):
         return jsonify({"success": False, "message": "Failed to retrieve library game"}), 500
 
 
-@library_bp.route('/user/<int:user_id>/library/game/<int:game_id>', methods=['DELETE'])
+@library_bp.route('/user/<int:user_id>/library/game/<int:steam_game_id>', methods=['DELETE'])
 @jwt_required()
-def remove_library_game(user_id, game_id):
+def remove_library_game(user_id, steam_game_id):
     current_user_id = get_jwt_identity()
 
     # Convert to int if needed (JWT identity might be string)
@@ -83,7 +82,7 @@ def remove_library_game(user_id, game_id):
         return jsonify({"success": False, "message": "Access denied"}), 403
 
     try:
-        success = LibraryService.remove_from_library(user_id, game_id)
+        success = LibraryService.remove_from_library(user_id, steam_game_id)
 
         if not success:
             return jsonify({"success": False, "message": "Game not found in user's library"}), 404
@@ -112,14 +111,14 @@ def add_to_library(user_id):
 
     data = request.get_json()
 
-    if 'game_id' not in data:
-        return jsonify({"success": False, "message": "Missing game_id parameter"}), 400
+    if 'steam_game_id' not in data:
+        return jsonify({"success": False, "message": "Missing steam_game_id parameter"}), 400
 
-    game_id = data['game_id']
+    steam_game_id = data['steam_game_id']
 
     try:
         try:
-            library_item = LibraryService.add_to_library(user_id, game_id)
+            library_item = LibraryService.add_to_library(user_id, steam_game_id)
         except ValueError as e:
             return jsonify({"success": False, "message": str(e)}), 404
 
@@ -129,7 +128,7 @@ def add_to_library(user_id):
             "data": {
                 "library_id": library_item.id,
                 "added_at": library_item.added_at,
-                "game": library_item.game.serialize() if library_item.game else None
+                "steam_game_id": library_item.steam_game_id
             }
         }), 201
 

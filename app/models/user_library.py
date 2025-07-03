@@ -9,22 +9,21 @@ class UserLibrary(db.Model):
 
     id = mapped_column(Integer, primary_key=True)
     user_id = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
-    game_id = mapped_column(Integer, ForeignKey("games.id"), nullable=False)
+    steam_game_id = mapped_column(Integer, nullable=False)  # Store Steam game ID directly
     added_at = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     # Relationships
     user = relationship("User", back_populates="user_library_entries")
-    game = relationship("Game", back_populates="user_library_entries")
 
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'game_id', name='unique_user_game_library'),
+        db.UniqueConstraint('user_id', 'steam_game_id', name='unique_user_steam_game_library'),
     )
 
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "game_id": self.game_id,
+            "steam_game_id": self.steam_game_id,
             "added_at": self.added_at,
         }

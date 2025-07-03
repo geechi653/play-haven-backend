@@ -11,31 +11,31 @@ class WishlistItemRepository:
         return wishlist_items
     
     @staticmethod
-    def get_wishlist_item(user_id: int, game_id: int) -> Optional[WishlistItem]:
+    def get_wishlist_item(user_id: int, steam_game_id: int) -> Optional[WishlistItem]:
         stmt = select(WishlistItem).where(
             WishlistItem.user_id == user_id,
-            WishlistItem.game_id == game_id
+            WishlistItem.steam_game_id == steam_game_id
         )
         wishlist_item = db.session.execute(stmt).scalar_one_or_none()
         return wishlist_item
     
     @staticmethod
-    def add_to_wishlist(user_id: int, game_id: int) -> WishlistItem:
-        existing_wishlist_item = WishlistItemRepository.get_wishlist_item(user_id, game_id)
+    def add_to_wishlist(user_id: int, steam_game_id: int) -> WishlistItem:
+        existing_wishlist_item = WishlistItemRepository.get_wishlist_item(user_id, steam_game_id)
         if existing_wishlist_item:
             return existing_wishlist_item
         
         wishlist_item = WishlistItem()
         wishlist_item.user_id = user_id
-        wishlist_item.game_id = game_id
+        wishlist_item.steam_game_id = steam_game_id
         
         db.session.add(wishlist_item)
         db.session.commit()
         return wishlist_item
     
     @staticmethod
-    def delete_from_wishlist(user_id: int, game_id: int) -> bool:
-        wishliset_item = WishlistItemRepository.get_wishlist_item(user_id, game_id)
+    def delete_from_wishlist(user_id: int, steam_game_id: int) -> bool:
+        wishliset_item = WishlistItemRepository.get_wishlist_item(user_id, steam_game_id)
         
         if not wishliset_item:  
             return False
