@@ -50,9 +50,14 @@ def register():
 
     try:
         user = AuthService.register(**data)
-        return jsonify({"message": "user successfully created", "user": user.serialize()})
+        access_token = create_access_token(identity=str(user.id), additional_claims={"username": user.username})
+        return jsonify({
+            "message": "user successfully created",
+            "user": user.serialize(),
+            "token": access_token
+        })
     except ValueError as e:
-        return jsonify({"error": f"registration failed", "messgae": str(e)}), 400
+        return jsonify({"error": f"registration failed", "message": str(e)}), 400
 
 
 @auth_bp.route("/login", methods=["POST"])
