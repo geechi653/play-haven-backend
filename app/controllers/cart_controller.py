@@ -43,8 +43,9 @@ def add_to_cart():
         data = request.json
         user_id = data.get('userId')
         game_id = data.get('gameId')
-        
+        print(f"[DEBUG] add_to_cart received: data={data}, user_id={user_id}, game_id={game_id}")  # Debug log
         if not user_id or not game_id:
+            print(f"[DEBUG] Missing userId or gameId: userId={user_id}, gameId={game_id}")  # Debug log
             return jsonify({"error": "User ID and Game ID are required"}), 400
             
         # Initialize user's cart if it doesn't exist
@@ -61,7 +62,8 @@ def add_to_cart():
         return jsonify({"message": "Game added to cart", "cartItems": cart_data[user_id]}), 201
     except Exception as e:
         logger.error(f"Error in add_to_cart: {e}")
-        return jsonify({"error": "Failed to add game to cart"}), 500
+        print(f"[DEBUG] Exception in add_to_cart: {e}")  # Debug log
+        return jsonify({"error": "Failed to add to cart"}), 500
 
 @cart_controller.route('/remove/<int:game_id>', methods=['DELETE'])
 @login_required
